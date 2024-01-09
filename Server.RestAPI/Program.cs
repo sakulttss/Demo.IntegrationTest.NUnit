@@ -33,3 +33,5 @@ app.MapControllers();
 app.Run();
 
 public partial class Program;
+
+public class RestAPIProgram : Program;

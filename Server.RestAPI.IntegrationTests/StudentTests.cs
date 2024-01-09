@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Moq;
 using Server.RestAPI.Controllers;
@@ -33,7 +34,7 @@ public class StudentTests
     [Test]
     public async Task GetAllStudents()
     {
-        var factory = new WebApplicationFactory<Program>();
+        var factory = new WebApplicationFactory<RestAPIProgram>();
         HttpClient? client = factory.CreateClient();
 
         var actual = await client.GetFromJsonAsync<IEnumerable<Student>>("/students");
@@ -51,7 +52,7 @@ public class StudentTests
     [TestCase(3, "Jack")]
     public async Task GetStudentById(int id, string expectedStudentName)
     {
-        var factory = new WebApplicationFactory<Program>();
+        var factory = new WebApplicationFactory<RestAPIProgram>();
         HttpClient? client = factory.CreateClient();
 
         var actual = await client.GetFromJsonAsync<Student>($"/students/{id}");
@@ -62,7 +63,7 @@ public class StudentTests
     [Test]
     public async Task CreateNewStudent()
     {
-        var factory = new WebApplicationFactory<Program>();
+        var factory = new WebApplicationFactory<RestAPIProgram>();
         var client = factory.CreateClient();
 
         var newStudent = new Student(4, "Jill");
@@ -93,7 +94,7 @@ public class StudentTests
             .Setup(it => it.GetStudentById(It.IsAny<int>()))
             .Returns<int>(id => students.FirstOrDefault(it => it.Id == id));
 
-        var factory = new WebApplicationFactory<Program>()
+        var factory = new WebApplicationFactory<RestAPIProgram>()
             .WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
@@ -119,7 +120,7 @@ public class StudentTests
     [Test]
     public async Task UpdateStudentWithoutAuth()
     {
-        var factory = new WebApplicationFactory<Program>();
+        var factory = new WebApplicationFactory<RestAPIProgram>();
         var client = factory.CreateClient();
 
         var student = new Student(10, "Au");
@@ -131,7 +132,7 @@ public class StudentTests
     [Test]
     public async Task UpdateStudentWithAuth()
     {
-        var factory = new WebApplicationFactory<Program>()
+        var factory = new WebApplicationFactory<RestAPIProgram>()
             .WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services =>
@@ -150,9 +151,21 @@ public class StudentTests
     }
 
     [Test]
+    public async Task UpdateStudentWithAuth_ByUsingCustomWebFactory()
+    {
+        var factory = new WebAithValidaAuth<RestAPIProgram>();
+        var client = factory.CreateClient();
+
+        var student = new Student(10, "Au");
+        var actual = await client.PutAsJsonAsync<Student>($"/students/1", student);
+
+        actual.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Test]
     public async Task UpdateStudentWithAuth_BySetupContentType_And_CORS()
     {
-        var factory = new WebApplicationFactory<Program>()
+        var factory = new WebApplicationFactory<RestAPIProgram>()
             .WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services =>
@@ -201,5 +214,19 @@ public class TestAuthHandler
         var ticket = new AuthenticationTicket(principal, "TestScheme");
         var result = AuthenticateResult.Success(ticket);
         return Task.FromResult(result);
+    }
+}
+
+public class WebAithValidaAuth<TEntryPoint> : WebApplicationFactory<TEntryPoint>
+    where TEntryPoint : class
+{
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureTestServices(services =>
+        {
+            services
+                .AddAuthentication("TestScheme")
+                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options => { });
+        });
     }
 }

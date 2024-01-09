@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.RestAPI", "Server.RestAPI\Server.RestAPI.csproj", "{509827D6-D6E6-4564-8A33-7FEAC1D39811}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.RestAPI", "Server.RestAPI\Server.RestAPI.csproj", "{509827D6-D6E6-4564-8A33-7FEAC1D39811}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.RestAPI.IntegrationTests", "Server.RestAPI.IntegrationTests\Server.RestAPI.IntegrationTests.csproj", "{27EBA275-60CC-4FF1-9A44-A3A8C972E430}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.RestAPI.IntegrationTests", "Server.RestAPI.IntegrationTests\Server.RestAPI.IntegrationTests.csproj", "{27EBA275-60CC-4FF1-9A44-A3A8C972E430}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.gRPCAPI", "Server.gRPCAPI\Server.gRPCAPI.csproj", "{1F0F8E8C-EEBB-40D2-8163-F1422E9CA73D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{27EBA275-60CC-4FF1-9A44-A3A8C972E430}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27EBA275-60CC-4FF1-9A44-A3A8C972E430}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27EBA275-60CC-4FF1-9A44-A3A8C972E430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F0F8E8C-EEBB-40D2-8163-F1422E9CA73D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F0F8E8C-EEBB-40D2-8163-F1422E9CA73D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F0F8E8C-EEBB-40D2-8163-F1422E9CA73D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F0F8E8C-EEBB-40D2-8163-F1422E9CA73D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

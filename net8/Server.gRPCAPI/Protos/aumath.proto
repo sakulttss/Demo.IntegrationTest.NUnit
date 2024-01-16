@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server.gRPCAPI";
+
+package aumath;
+
+// The greeting service definition.
+service AuMath {
+  // Sends a greeting
+  rpc Add(AdditionRequest) returns (AdditionResponse);
+}
+
+message AdditionRequest {
+  int32 first = 1;
+  int32 second = 2;
+}
+
+message AdditionResponse {
+  int32 result = 1;
+}
